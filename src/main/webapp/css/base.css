@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+@media screen and (min-width: 1201px) {
+	body {
+		width: 1300px
+	}
+}
+/* css注释：设置了浏览器宽度不小于1201px时 abc 显示1200px宽度 */
+@media screen and (max-width: 1200px) {
+	body {
+		width: 1000px;
+	}
+}
+/* 设置了浏览器宽度不大于1200px时 abc 显示900px宽度 */
+@media screen and (max-width: 901px) {
+	body {
+		width: 770px;
+	}
+}
+/* 设置了浏览器宽度不大于901px时 abc 显示200px宽度 */
+@media screen and (max-width: 500px) {
+	body {
+		width: 400px;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	body {
+		width: 360px;
+	}
+}
+
+
+.search-form {
+	display: inline-block;
+	float: right;
+	margin-right: 8%;
+	width: 40%;
+}
+
+.search-input {
+	width: 100%;
+	border: 3px solid #eee;
+	border-radius: 2px;
+}
+
+/**
+* menu
+**/
+.menu {
+	display: inline-block;
+	margin: auto;
+}
+
+.menu ol {
+	list-style-type: none;
+	background-color: pink;
+	overflow: hidden;
+	padding: 0px 8%;
+	border-radius: 2px;
+}
+
+.menu ol li {
+	display: inline-block;
+}
+
+.menu ol li a {
+	display: block;
+	color: white;
+	font-size: 13px;
+	text-decoration: none;
+	padding: 8px 10px;
+}
+
+.menu ol li a:hover {
+	background-color: #ef9;
+	color: yellowgreen;
+	border-radius: 1px;
+}
+/*
+* 电影栏
+*/
+div.img {
+	margin: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	width: 30%;
+}
+
+div.img:hover {
+	border: 1px solid #777;
+}
+
+div.img img {
+	width: 100%;
+	background-position: 50% 50%;
+	background-size: cover;
+}
+
+div.desc {
+	overflow: hidden;
+	padding: 15px;
+	text-align: center;
+}
+
+h5 {
+	background-color: lightgreen;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-radius: 1px;
+}

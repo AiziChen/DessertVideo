@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DBCP数据源 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="org.sqlite.JDBC"
+		p:url="jdbc:sqlite:./Dessert_video.db" p:username="root"
+		p:password="quanyec" p:maxActive="255" p:maxIdle="2"
+		p:maxWait="120000" />
+
+	<!-- 定义Hibernate的SessionFactory，并依赖注入数据源，注入上面定义的dataSource -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		p:dataSource-ref="dataSource">
+		<!-- annotatedClasses属性用于列出全部持久化类 -->
+		<property name="annotatedClasses">
+			<list>
+				<!-- 以下用来列出Hibernate的持久化类 -->
+			</list>
+		</property>
+		<property name="mappingResources">
+			<!-- 以下用来列出Hibernate的持久化类的配置文件 -->
+			<value>quanye/dessertvideo/domain/Video.hbm.xml</value>
+		</property>
+		<!-- 定义Hibernate的SessionFactory的属性 -->
+		<property name="hibernateProperties">
+			<!-- 指定数据库方言、是否自动建表、是否生成SQL语句等 -->
+			<value>
+				hibernate.dialect=quanye.dessertvideo.tools.SQLiteDialect
+				hibernate.hbm2ddl.auto=update
+				hibernate.show_sql=true
+				hibernate.format_sql=true
+				#开启二级缓存
+				hibernate.cache.use_second_level_cache=true
+				#设置二级缓存的提供者
+				hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
+			</value>
+		</property>
+	</bean>
+
+	<!-- 配置Spring声明式事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+
+	<!-- 为指定的事务管理器配置事务增强处理Bean -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- Spring AOP配置 -->
+	<aop:config>
+		<!-- 配置一个切入点 -->
+		<aop:pointcut id="videoPointcut"
+			expression="execution(* quanye.dessertvideo.dao.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="videoPointcut" />
+	</aop:config>
+
+	<bean id="videoDao"
+		class="quanye.dessertvideo.dao.impl.VideoDaoImpl1"
+		p:sessionFactory-ref="sessionFactory" />
+
+</beans>

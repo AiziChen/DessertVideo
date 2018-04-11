@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD//EN"     
+        "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+	package="quanye.dessertvideo.domain">
+	<class name="Video" table="video_list">
+		<id name="id" column="video_id">
+			<generator class="identity" />
+		</id>
+		<property name="name" column="video_name" type="string" />
+		<property name="type" column="video_type" type="string" />
+		<list name="playLinks" table="play_links" lazy="false">
+			<key column="video_id" not-null="true" />
+			<list-index column="list_order" />
+			<element type="string" column="play_link" />
+		</list>
+		<property name="imageLink" column="image_link" type="string" />
+		<property name="details" column="video_details" />
+		<property name="releaseDate" column="release_date"
+			type="java.util.Date" />
+	</class>
+
+</hibernate-mapping>
