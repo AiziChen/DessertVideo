@@ -25,5 +25,5 @@ public interface VideoDao extends BaseDao<Video> {
 
 	Video findByName(String name);
 
-	Video[] findByNameLike(String name);
+	List<Video> findByNameLike(String name);
 }

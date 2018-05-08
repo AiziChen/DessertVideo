@@ -77,12 +77,12 @@ public class VideoDaoImpl2 implements VideoDao {
 	 * @param name
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Video[] findByNameLike(String name) {
+	public List<Video> findByNameLike(String name) {
 		List<?> list = sessionFactory.getCurrentSession().createQuery("from Video v where v.name like :name")
 				.setString("name", "%"+name+"%").list();
-		Video[] videos = new Video[list.size()];
-		return list.toArray(videos);
+		return (List<Video>)list;
 	}
 
 }

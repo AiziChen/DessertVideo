@@ -13,6 +13,7 @@ public class ShowTypeAction extends ActionSupport {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final int SUM = 20;
 
 	private String type;
 	private int page;
@@ -21,15 +22,25 @@ public class ShowTypeAction extends ActionSupport {
 
 	@Override
 	public String execute() throws Exception {
-		if (type == null || type.isEmpty()) {
+		videos = Tools.getVideoDao().findByType(type);
+		totalPage = videos.size() / SUM;
+		if (page > totalPage) {
 			return ERROR;
+		} else if (totalPage == 0) {
+			return SUCCESS;
+		} else {
+			if (page == 0) {
+				page = 1;
+			}
+			videos = videos.subList((page - 1) * SUM, page * SUM);
 		}
-		if (page == 0) {
-			page = 1;
+		return SUCCESS;
+	}
+
+	@Override
+	public void validate() {
+		if (type == null || type.isEmpty()) {
 		}
-		videos = Tools.getVideoDao().findByType(type).subList((page - 1) * 10, page * 10);
-		totalPage = videos.size() / 10;
-		return super.execute();
 	}
 
 	public String getType() {

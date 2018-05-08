@@ -72,11 +72,11 @@ public class VideoDaoImpl1 extends HibernateDaoSupport implements VideoDao {
 	 * @param name
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Video[] findByNameLike(String name) {
+	public List<Video> findByNameLike(String name) {
 		List<?> list = getHibernateTemplate().find("from Video as v where v.name like ?", "%" + name + "%");
-		Video[] videos = new Video[list.size()];
-		return list.toArray(videos);
+		return (List<Video>)list;
 	}
 
 }
